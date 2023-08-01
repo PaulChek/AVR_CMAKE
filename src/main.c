@@ -4,11 +4,13 @@
 
 int main()
 {
-    DDRD = 1 << 7 | 1 << 6;
+    DDRD = 1<<7| 1 << 6;
+
     while (1)
     {
-        _delay_ms(100);
-        PORTD ^= 1 << 7 | 1 << 6;
+        PD->N7 ^= 1;
+        _delay_ms(150);
+        PD->N6 ^= 1;
     }
 
     return 0;
