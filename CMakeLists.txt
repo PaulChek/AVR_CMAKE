@@ -4,18 +4,20 @@ set(CMAKE_SYSTEM_NAME Generic)
 set(CMAKE_CXX_COMPILER avr-g++)
 set(CMAKE_C_COMPILER avr-gcc)
 set(CMAKE_ASM_COMPILER avr-gcc)
+set(F_CPU 8000000)
 set(MCU atmega32a)
+set(CMAKE_BUILD_TYPE Debug)
+add_compile_options( -g -Os -mmcu=${MCU}  -DF_CPU=${F_CPU})
+#project name
+project(blinky C CXX ASM)
 
-add_compile_options( -mmcu=${MCU} -Os )
 
-project(blinky)
 add_subdirectory(src)
-
 
 add_custom_target(
     HEXandFLASH
-    COMMAND avr-objcopy  -O ihex -j .text -j .data 
+    COMMAND avr-objcopy -O ihex
     ${CMAKE_BINARY_DIR}/src/${PROJECT_NAME} ${CMAKE_BINARY_DIR}/src/${PROJECT_NAME}.hex #genrate hex file
-    COMMAND avrdude -c usbasp -p ${MCU} -P usb  #flash to MCU
-    -U flash:w:${CMAKE_BINARY_DIR}/src/${PROJECT_NAME}.hex:i
+    COMMAND avrdude -c usbasp -p ${MCU} -P usb  -U flash:w:${CMAKE_BINARY_DIR}/src/${PROJECT_NAME}.hex:i
+    DEPENDS ${PROJECT_NAME}
     )
