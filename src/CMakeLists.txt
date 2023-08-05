@@ -3,6 +3,6 @@
 add_custom_target(${PROJECT_NAME}
 WORKING_DIRECTORY ${CMAKE_HOME_DIRECTORY}/src
 COMMAND avr-gcc -g -Os -mmcu=${MCU} -DF_CPU=${F_CPU} 
-    main.c RotateBits.S ports.h
+    main.c RotateBits.S ports.h dancing_leds.h
 -o ${CMAKE_BINARY_DIR}/src/${PROJECT_NAME}
 )
