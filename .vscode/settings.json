@@ -1,6 +1,7 @@
 {
     "files.associations": {
         "delay.h": "c",
-        "ports.h": "c"
+        "ports.h": "c",
+        "spi.h": "c"
     }
 }

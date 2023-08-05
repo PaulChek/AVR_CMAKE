@@ -1,15 +1,16 @@
-
 #include <util/delay.h>
 #include "ports.h"
 #include "dancing_leds.h"
+#include "spi.h"
+#include "../spiI2cuart/spi.h"
 
-volatile void rotate_bits(volatile byte *);
+volatile void rotate_bits( byte );
 
 int main()
 {
     DDRC = 0xFF;
     byte direction = 0;
-    uint8_t delay_time = 255;
+    uint8_t delay_time = 100;
     // button
     DDRD |= 0 << 6;
     byte scheme_state = 0;
