@@ -4,6 +4,6 @@
 add_custom_target(${PROJECT_NAME}
 WORKING_DIRECTORY ${CMAKE_HOME_DIRECTORY}/src
 COMMAND avr-gcc -g -Os -mmcu=${MCU} -DF_CPU=${F_CPU}
- main.c RotateBits.S 
+ main.c RotateBits.S ../spiI2cuart/*.c
 -o ${CMAKE_BINARY_DIR}/src/${PROJECT_NAME}
 )

@@ -20,7 +20,7 @@ typedef unsigned char byte;
 // DDRB actually in atmega32
 #define DDR_SPI *((volatile byte *)0x37) // data direction for spi DDRB
 #define MOSI 5                           // PB5
-#define SCK 7                            // clock PB&
+#define SCK 7                            // PB7
 
 // Functions prototype
 void SPI_Master_Init(void);
