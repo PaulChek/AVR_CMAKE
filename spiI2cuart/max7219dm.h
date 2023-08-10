@@ -17,7 +17,7 @@
 // slave
 #define CS_PIN (1 << 4)
 #define CS_ON PORTD &= ~CS_PIN
-#define CS_OFF PORTD |= CS_PIN
+#define CS_OFF PORTD |= CS_PIN // always high for off
 // Funs
 void MasterTransmittToRegisterMAX7219(byte reg_address, byte data);
 void LedM8x8_Init();

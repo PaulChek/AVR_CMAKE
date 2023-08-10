@@ -14,7 +14,9 @@ typedef unsigned char byte;
 
 #define SPCR *((volatile byte *)0x2D) // Control Register [SPIE SPE DORD MSTR CPOL CPHA SPR1 SPR0]
 #define MSTR 4                        // Master/Slave Select
-#define SPE 6                         // When the SPE bit is written to one, the SPI is enabled.
+#define SPE 6
+#define CPOL 3                         // polarity
+#define CPOH 2                       // phase
 #define SPR0 0                        // Bits 1, 0 – SPR1, SPR0: SPI Clock Rate Select 1 and 0
 
 // DDRB actually in atmega32

@@ -3,9 +3,10 @@
 void SPI_Master_Init()
 {
     /* Set MOSI and SCK output*/
+    *((volatile byte *)(0x38)) |= (1 << 4); // SS high on the master mode PORTB
     DDR_SPI = (1 << MOSI) | (1 << SCK);
     /* Enable SPI, Master, set clock rate fosc/4 */
-    SPCR = (1 << SPE) | (1 << MSTR) | (0 << SPR0);
+    SPCR = (1 << SPE) | (1 << MSTR) | (0 << CPOL) | (0 << CPOH) | (0 << SPR0);
 }
 
 void SPI_Master_Transmit(unsigned char data)
@@ -14,7 +15,7 @@ void SPI_Master_Transmit(unsigned char data)
     char x = '\0';
     SPDR = data;
     // wait for transmission complete(1)
-    while (SPSR & (1 << SPIF) == 0)
+    while (!(SPSR & (1 << SPIF)))
         ;
     x = SPDR; // flashing SPDR
 }
