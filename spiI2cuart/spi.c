@@ -3,8 +3,8 @@
 void SPI_Master_Init()
 {
     /* Set MOSI and SCK output*/
-    *((volatile byte *)(0x38)) |= (1 << 4); // SS high on the master mode PORTB
-    DDR_SPI = (1 << MOSI) | (1 << SCK);
+   // *((volatile byte *)(0x38)) |= (1 << 4); // SS high on the master mode PORTB
+    DDR_SPI = (1 << MOSI) | (1 << SCK)|(1<<4);
     /* Enable SPI, Master, set clock rate fosc/4 */
     SPCR = (1 << SPE) | (1 << MSTR) | (0 << CPOL) | (0 << CPOH) | (0 << SPR0);
 }

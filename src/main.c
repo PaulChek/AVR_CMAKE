@@ -15,5 +15,8 @@ int main()
     while (1)
     {
          SSD1306_COMMAND(ENTIRE_DISPLAY_ON_CMND);
+         _delay_ms(1000);
+         SSD1306_COMMAND(0xa4);
+         _delay_ms(1000);
     }
 }
