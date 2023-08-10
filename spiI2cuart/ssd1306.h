@@ -68,7 +68,7 @@ void SSD1306_COMMAND(byte command)
     SPI_Master_Transmit(command);
     CS_SSD1306_OFF;
 }
-
+void SSD1306_clearDisplay();
 void Init_SSD1306()
 {
     PORTD = 0;
@@ -85,13 +85,46 @@ void Init_SSD1306()
     RESET_SSD1306_LOW;
     _delay_us(3);
     RESET_SSD1306_HIGH;
-
+    // charge pump
     _delay_ms(150);
     SSD1306_COMMAND(CHARGE_PUMP_CMND);
     SSD1306_COMMAND(CHARGE_PUMP_ENABLE);
-   
+    _delay_ms(10);
+
+    // memory map
+    SSD1306_COMMAND(SET_ADDRESSING_MODE_CMND);
+    SSD1306_COMMAND(SET_HORIZONTAL_MODE);
+
+    // REMAP
+    SSD1306_COMMAND(0xc8);
+    SSD1306_COMMAND(0xDA);
+    SSD1306_COMMAND(0x12);
+    SSD1306_COMMAND(0xA1); // col 127 to 0;
+
+    // turn on display
     _delay_ms(150);
     SSD1306_COMMAND(DISPLAY_ON_CMND);
-}
 
+    // clear display
+    SSD1306_clearDisplay();
+}
+void SSD1306_clearDisplay()
+{
+    SSD1306_COMMAND(SET_PAGE_ADDRESS_CMND);
+    SSD1306_COMMAND(0);
+    SSD1306_COMMAND(7);
+    SSD1306_COMMAND(SET_COL_ADDRESS_CMND);
+    SSD1306_COMMAND(0);
+    SSD1306_COMMAND(127);
+    for (int i = 0; i <= 128 * 64 / 8; i++)
+        SSD1306_DATA(0);
+}
+// write banch
+void SSD1306_DRAW(uint32_t size, byte *array)
+{
+    do
+    {
+        SSD1306_DATA(*(array++));
+    } while (--size);
+}
 #endif
