@@ -69,6 +69,7 @@ void SSD1306_COMMAND(byte command)
     CS_SSD1306_OFF;
 }
 void SSD1306_clearDisplay();
+// add ports to parameters
 void Init_SSD1306()
 {
     PORTD = 0;
