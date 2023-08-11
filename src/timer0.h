@@ -19,17 +19,17 @@ static int16_t counter = 0;
 ISR(TIMER0_OVF_vect)
 { // interrupt vector
     counter--;
-    TIFR = 1; //it clears flag to zero)))
+    TIFR = 1; // it clears flag to zero)))
 }
 
 void setupTimer0(int ms10)
 {
     counter = ms10;
-    TCCR0 = 0b101;    // freq/1024
-    TCNT0 = 255 - 78; // almost 10 ms
-    TIFR = 1;
-    TIMSK |= (1 << 0);
-    SREG |= (1 << 7); // sei() enable global interrupts
+    TCCR0 = 0b101;     // freq/1024
+    TCNT0 = 256 - 78;  // almost 10 ms 256 -78
+    TIFR = 1;          // clear flag
+    TIMSK |= (1 << 0); // enable interrupts on overflow timer0 if SREG i-bit is one
+    SREG |= (1 << 7);  // sei() enable global interrupts
 }
 int16_t timer0()
 {
