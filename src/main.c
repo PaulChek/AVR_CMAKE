@@ -9,6 +9,7 @@ volatile void rotate_bits(byte);
 static byte font[][5] = {
     {0x7f, 0x08, 0x08, 0x7f, 0}, // H
     {0x0, 0x0, 0x0, 0x0, 0},     // space
+    {0,3,3,0,0},     // .
 };
 
 int main()
@@ -23,6 +24,7 @@ int main()
         {
             SSD1306_DRAW(5, font[0]);
             SSD1306_DRAW(5, font[1]);
+            SSD1306_DRAW(5, font[2]);
                     prev = timer0();
         }
         

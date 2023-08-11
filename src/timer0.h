@@ -19,7 +19,8 @@ static int16_t counter = 0;
 ISR(TIMER0_OVF_vect)
 { // interrupt vector
     counter--;
-    TIFR = 1; // it clears flag to zero)))
+    // TIFR = 1; // it clears flag to zero))) auto in Interup services
+    TCNT0 = 256 - 78;
 }
 
 void setupTimer0(int ms10)
