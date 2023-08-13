@@ -11,6 +11,7 @@ void SPI_Master_Init()
 
 void SPI_Master_Transmit(unsigned char data)
 {
+    *((volatile byte *)0x35) |=(1<<3);
     // start transmission by placing data in shift reg
     char x = '\0';
     SPDR = data;
@@ -18,4 +19,5 @@ void SPI_Master_Transmit(unsigned char data)
     while (!(SPSR & (1 << SPIF)))
         ;
     x = SPDR; // flashing SPDR
+   *((volatile byte *)0x35) &=~(1<<3);
 }

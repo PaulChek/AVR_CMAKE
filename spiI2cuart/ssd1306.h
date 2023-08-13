@@ -3,8 +3,31 @@
 
 #include "../src/ports.h"
 #include <util/delay.h>
+#include <avr/interrupt.h>
 #include "spi.h"
-
+// interrupts for brightness controll
+#define CICR *((volatile byte *)0x5b)  // – General Interrupt Control Register
+#define MCUCR *((volatile byte *)0x55) // MCU General Control Register
+#define SREG *((volatile byte *)0x5f)  // Status Register
+void SSD1306_ReduceContrast();
+void SSD1306_AddContrast();
+void draw_volume_bar();
+void SETUP_INTERRUPTS()
+{
+    SREG |= (1 << 7);                                   // enable interrupts
+    CICR |= (1 << 6) | (1 << 7);                        // enable int0 and int1
+    MCUCR |= (1 << 3) | (1 << 2) | (1 << 1) | (1 << 0); // enable external interupt of int0 and int1 on rising edge;
+}
+ISR(INT0_vect)
+{ //-- interrupt service routine
+    SSD1306_ReduceContrast();
+    draw_volume_bar();
+}
+ISR(INT1_vect)
+{ //++
+    SSD1306_AddContrast();
+    draw_volume_bar();
+}
 /**
  * https://pdf1.alldatasheet.com/datasheet-pdf/view/1179026/ETC2/SSD1306.html
  * 1. Fundamental Command Table*/
@@ -71,11 +94,13 @@ void SSD1306_COMMAND(byte command)
 void SSD1306_clearDisplay();
 
 // add ports as parameters
+static byte contrast = 2;
 void Init_SSD1306()
 {
     PORTD = 0;
     DDRD = 0;
     DDRD = PIN_CS_SSD1306 | PIN_DC_SSD1306 | PIN_RESET_SSD1306; // 7,6,5 output
+
 
     // pull-up
     RESET_SSD1306_HIGH;
@@ -107,8 +132,24 @@ void Init_SSD1306()
     _delay_ms(150);
     SSD1306_COMMAND(DISPLAY_ON_CMND);
 
+    SSD1306_COMMAND(SET_CONTRAST_CMND);
+    SSD1306_COMMAND(contrast);
+
     // clear display
     SSD1306_clearDisplay();
+    SETUP_INTERRUPTS(); // for buttons and brightness controll
+}
+void SSD1306_AddContrast()
+{
+    contrast += (contrast < 245 ? 10 : 0);
+    SSD1306_COMMAND(SET_CONTRAST_CMND);
+    SSD1306_COMMAND(contrast);
+}
+void SSD1306_ReduceContrast()
+{
+    contrast -= (contrast <= 10 ? 0 : 10);
+    SSD1306_COMMAND(SET_CONTRAST_CMND);
+    SSD1306_COMMAND(contrast);
 }
 void SSD1306_clearDisplay()
 {
@@ -128,5 +169,22 @@ void SSD1306_DRAW(uint32_t size, byte *array)
     {
         SSD1306_DATA(*(array++));
     } while (--size);
+}
+void draw_volume_bar()
+{
+    SSD1306_clearDisplay();
+     SSD1306_COMMAND(SET_PAGE_ADDRESS_CMND);
+     SSD1306_COMMAND(3);
+     SSD1306_COMMAND(3);
+     SSD1306_COMMAND(SET_COL_ADDRESS_CMND);
+     SSD1306_COMMAND(30);
+     SSD1306_COMMAND(90);
+    int16_t i = contrast / 4;
+    while (--i > 0)
+    {
+        SSD1306_DATA(0b1111111);
+    }
+    _delay_ms(150);
+    SSD1306_clearDisplay();
 }
 #endif
