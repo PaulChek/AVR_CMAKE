@@ -101,7 +101,6 @@ void Init_SSD1306()
     DDRD = 0;
     DDRD = PIN_CS_SSD1306 | PIN_DC_SSD1306 | PIN_RESET_SSD1306; // 7,6,5 output
 
-
     // pull-up
     RESET_SSD1306_HIGH;
     CS_SSD1306_OFF;
@@ -173,12 +172,12 @@ void SSD1306_DRAW(uint32_t size, byte *array)
 void draw_volume_bar()
 {
     SSD1306_clearDisplay();
-     SSD1306_COMMAND(SET_PAGE_ADDRESS_CMND);
-     SSD1306_COMMAND(3);
-     SSD1306_COMMAND(3);
-     SSD1306_COMMAND(SET_COL_ADDRESS_CMND);
-     SSD1306_COMMAND(30);
-     SSD1306_COMMAND(90);
+    SSD1306_COMMAND(SET_PAGE_ADDRESS_CMND);
+    SSD1306_COMMAND(3);
+    SSD1306_COMMAND(3);
+    SSD1306_COMMAND(SET_COL_ADDRESS_CMND);
+    SSD1306_COMMAND(30);
+    SSD1306_COMMAND(90);
     int16_t i = contrast / 4;
     while (--i > 0)
     {

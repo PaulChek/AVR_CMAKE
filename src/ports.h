@@ -14,7 +14,11 @@ typedef volatile struct PORT_S
     byte N6 : 1;
     byte N7 : 1;
 } PORT, *P_PORT;
-//B
+// A
+#define PORTA *((volatile byte *)0x3b)
+#define DDRA *((volatile byte *)0x3a)
+#define PINA *((volatile byte *)0x39)
+// B
 #define PORTB *((volatile byte *)0x38)
 // D
 #define PORTD *((volatile byte *)0x32) // output register of GPIO pins

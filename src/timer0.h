@@ -16,10 +16,10 @@
 
 static int16_t counter = 0;
 
-ISR(TIMER0_OVF_vect)
+ISR(TIMER0_OVF_vect,ISR_NOBLOCK)
 { // interrupt vector
     counter--;
-    // TIFR = 1; // it clears flag to zero))) auto in Interup services
+    //TIFR = 1; // it clears flag to zero))) auto in Interup services
     TCNT0 = 256 - 78;
 }
 

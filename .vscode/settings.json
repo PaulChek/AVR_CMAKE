@@ -2,6 +2,7 @@
     "files.associations": {
         "delay.h": "c",
         "ports.h": "c",
-        "spi.h": "c"
+        "spi.h": "c",
+        "timer0.h": "c"
     }
 }
