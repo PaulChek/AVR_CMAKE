@@ -20,6 +20,8 @@ typedef volatile struct PORT_S
 #define PINA *((volatile byte *)0x39)
 // B
 #define PORTB *((volatile byte *)0x38)
+#define DDRB *((volatile byte *)0x37)
+#define PINB *((volatile byte *)0x36)
 // D
 #define PORTD *((volatile byte *)0x32) // output register of GPIO pins
 #define DDRD *((volatile byte *)0x31)  // data direction register if 0-in pin, 1-out pin
