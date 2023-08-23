@@ -162,6 +162,6 @@ void SSD1306_DRAW(uint32_t size, const byte *array)
 void SSD1306_PRINT(char *s)
 {
     for (char *c = s; *c != '\0'; c++)
-        SSD1306_DRAW(5, font[*c - 46]);
+        SSD1306_DRAW(*c=='.'?2:5, font[*c - 46]);
 }
 #endif

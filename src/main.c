@@ -1,5 +1,4 @@
 #include <util/delay.h>
-#include <stdio.h>
 #include "ports.h"
 #include "dancing_leds.h"
 #include "../spiI2cuart/spi.h"
@@ -11,22 +10,7 @@
 #include "Iwire.h"
 
 // volatile void rotate_bits(byte);
-char *uint64_tostring(uint64_t n, char str[static 21])
-{
-    if (!n)
-    {
-        str[0] = '0';
-        return str;
-    }
 
-    str += 19;
-    while (n)
-    {
-        *str-- = (n % 10) + '0';
-        n /= 10;
-    }
-    return str + 1;
-}
 int main()
 {
     SPI_Master_Init();
@@ -37,9 +21,10 @@ int main()
     int16_t prev = timer0();
     // setupADC();
     cli();
-    uint8_t serial_ds1820[8] ={0};
-     IwireReadAddress(serial_ds1820);
-    char serial_num[4] = {'\0'};
+    uint8_t serial_ds1820[8] = {0};
+    IwireReadAddress(serial_ds1820);
+    uint8_t reg[] = {0x48, 0x46, 0b00011111};
+    SetDS18B20Resolution(serial_ds1820, reg);
     sei();
 
     int i = 0;
@@ -47,16 +32,16 @@ int main()
     {
         if (prev - timer0() >= 30)
         {
-            snprintf(serial_num, 4, "%u", serial_ds1820[i%8]);
-            SSD1306_PRINT(serial_num);
+            cli();
+            char *temp = DS18B20GetTemperature(serial_ds1820);
+            sei();
+            SSD1306_PRINT(temp);
             SSD1306_DATA(0);
             SSD1306_DATA(0);
             SSD1306_DATA(0);
             SSD1306_DATA(0);
             SSD1306_DATA(0);
             prev = timer0();
-            i++;
-            // ADCSRA |= (1 << 6);
         }
 
         if (timer0() <= 0)
