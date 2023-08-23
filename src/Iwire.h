@@ -101,7 +101,7 @@ char *DS18B20GetTemperature(uint8_t device_address[static 8])
     }
     IwireWriteRomCmd(CONVERT_T);
     // II
-    _delay_ms(93);
+    _delay_ms(94);
     ResetIwireBus();
     IwireWriteRomCmd(MATCH_ROM); // match rom
     for (uint8_t i = 0; i < 8; i++)
