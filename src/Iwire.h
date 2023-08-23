@@ -119,8 +119,11 @@ char *ConvertNumToString(uint8_t mb, uint8_t lb)
 {
     static char res[6] = {[3] = '.', '0', '\0'};
     static char *res_p = res;
+    
     if ((lb >> 3) & 1 == 1)
         res[4] = '5';
+    else
+        res[4] = '0';
 
     uint16_t val = (mb << 8) | lb;
     val = (val << 5) >> 9; // removing sign
